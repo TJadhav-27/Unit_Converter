@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
 
+<div class="container">
+    <h1>Unit Converter</h1>
+    <form method="POST">
+        <div class="input-group">
+            <label for="value">Enter Value:</label>
+            <input type="number" id="value" name="value" step="any" required>
+        </div>
+
+        <div class="input-group">
+            <label for="category">Select Category:</label>
+            <select name="category" id="category" required>
+                <option value="length">Length</option>
+                <option value="temperature">Temperature</option>
+                <option value="weight">Weight</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="from_unit">From Unit:</label>
+            <select name="from_unit" id="from_unit" required>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="to_unit">To Unit:</label>
+            <select name="to_unit" id="to_unit" required>
+            </select>
+        </div>
+
+        <button type="submit">Convert</button>
+    </form>
+
+    {% if result is not none %}
+    <div class="result">
+        <h3>Result: {{ result }}</h3>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    
+    const categorySelector = document.getElementById('category');
+    const fromUnitSelector = document.getElementById('from_unit');
+    const toUnitSelector = document.getElementById('to_unit');
+
+    const units = {
+        length: ["meters", "kilometers", "centimeters", "millimeters"],
+        temperature: ["Celsius", "Fahrenheit", "Kelvin"],
+        weight: ["grams", "kilograms", "pounds", "ounces"]
+    };
+
+    function updateUnits() {
+        const selectedCategory = categorySelector.value;
+        const availableUnits = units[selectedCategory];
+
+        fromUnitSelector.innerHTML = availableUnits.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+        toUnitSelector.innerHTML = availableUnits.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+    }
+
+    categorySelector.addEventListener('change', updateUnits);
+    updateUnits();
+</script>
+
+</body>
+</html>
